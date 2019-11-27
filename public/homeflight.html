@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="js/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+
+<!-- comment -->
+
+<body background="images/plane.jpg" style="background-image: padding;" ng-app="flightApp">
+    <div class="search-header">
+        <h1 style="color: rgb(61, 53, 179);">FLIGHT</h1>
+    </div>
+
+    <div class="container-fluid" ng-controller="searchCtrl">
+
+        <form name="Form" onsubmit="">
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <label id="fromCity">Flying From</label><br> <br>
+                    <input class="form-control" name="fromCity" id="fromCity" placeholder="From City" oninput="return showOption('fromCity' , 'departing')" ng-model="fromCity">
+                </div>
+                <div class="col-sm-4">
+                    <label for="toCity">Flying to</label><br><br>
+                    <input type="text" class="form-control" name="toCity" id="toCity" placeholder="To City" oninput="return showOption('toCity' , 'returning')" ng-model="toCity">
+                </div>
+                <div class="radio col-sm-4 order-1">
+                    <label><input type="radio" name="directionOptRadio" value="ONE_WAY">One Way</label>
+                    <br>
+                    <label><input type="radio" name="directionOptRadio" value="ROUND_TRIPS" checked>Round Trip</label>
+                </div>
+            </div><br>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="departing">Departing</label><br>
+                    <select class="form-control" name="departing" id="departing">
+            <option id="BKK">Suvarnabumi (BKK)</option>
+            <option id="DMK">Donmueng (DMK)</option>
+            <option id="CDG">Charles de Gaulle (CDG)</option>
+          </select><br>
+                </div>
+                <div class="col-sm-4">
+                    <label for="returning">Returning</label><br>
+                    <select class="form-control" name="returning" id="returning">
+            <option id="BKK">Suvarnabumi (BKK)</option>
+            <option id="DMK">Donmueng (DMK)</option>
+            <option id="CDG">Charles de Gaulle (CDG)</option>
+          </select>
+                </div>
+            </div><br>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <label for="adults">Adult(s)</label><br>
+                    <select class="form-control" name="adults" id="adults">    
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+                </div>
+
+                <div class="col-sm-4">
+                    <label for="cabin">Cabin</label><br>
+                    <select class="form-control" name="cabin" id="cabin">
+            <option value="Economy">Economy Class</option>
+            <option value="Business">Business Class</option>
+            <option value="First">First Class</option>
+          </select>
+                </div>
+
+            </div><br>
+            <button class="btn btn-default" style=" background-color: lightskyblue;" id="searchButton" ng-click="submit()" disabled> Search</button>
+        </form>
+    </div>
+
+    <script src="js/flight.js"></script>
+    <script src="js/plus.js"></script>`
+</body>
+
+</html>

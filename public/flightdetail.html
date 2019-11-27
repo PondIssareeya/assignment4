@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search result</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <style>
+        th {
+            width: -15px;
+        }
+    </style>
+</head>
+
+<body ng-app="flightApp" ng-controller="resultCtrl">
+
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#list-view">List View</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#matrix-view">Matrix View</a>
+            </li>
+        </ul>
+        <!-- This is div that contrain tab data -->
+        <div class="tab-content">
+
+            <!-- This is div for list-view tab-->
+            <div id="list-view" class="tab-pane fade in active">
+
+                <!-- This is div for head of column-->
+                <div class="container">
+                    <div class="col-sm-9">
+                        <br>
+                        <p> {{data.length + " of " + data.length}} shown - one-way</p>
+                    </div>
+                    <div class="col-sm-3" style="text-align: right;">
+                        <ul class="pagination pagination-sm">
+                            <li>
+                                <a href="#"><span class="glyphicon glyphicon-triangle-left"></span>&nbsp;</a>
+                                <a href="#">1</a>
+                                <a href="#"><span class="glyphicon glyphicon-triangle-right"></span>&nbsp;</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="container">
+                        <table class="table">
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-center">
+                                        <u style="color: blue;">Price</u>
+                                    </th>
+                                    <th>
+                                        <u style="color: blue;">Airline</u>
+                                    </th>
+                                    <th>
+                                        <u style="color: blue;">Take-off</u>
+                                    </th>
+                                    <th class="text-center">
+                                        <u style="color: blue;">Landing</u>
+                                    </th>
+                                    <th class="text-center">
+                                        <u style="color: blue;">Stops (Duration)</u>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- This is div for each data's flight-->
+                <br>
+                <div class="container" style="margin-left: -0.4cm;">
+                    <div class="container" ng-repeat="x in data">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <table class="table">
+                                    <tr style="border-collapse:separate;">
+                                        <td rowspan="2">
+                                            <p style="font-size:24pt; color:blue">€{{x.outbound.price}}</p>
+                                            </th>
+                                            <td>{{x.outbound.airline}}</th>
+                                                <td>{{x.outbound.takeOffFrom}}
+                                                    <br>{{x.outbound.takeOffTime.hourOfDay + ":" + x.outbound.takeOffTime.minute}}</th>
+                                                    <td>{{x.outbound.landingTo}}
+                                                        <br>{{ x.outbound.landingTime.hourOfDay + ":" + x.outbound.landingTime.minute}}</th>
+                                                        <td>{{x.outbound.transists.length + flightDataService.getDurationTime(x.outbound.takeOffTime.hourOfDay, x.outbound.takeOffTime.minute , x.outbound.landingTime.hourOfDay, x.outbound.landingTime.minute)}}(19h
+                                                            42m)
+                                                            </th>
+                                    </tr>
+                                </table>
+                                <div aliagn="right">
+                                    <button class="btn btn-link" style="text-decoration: underline" data-toggle="collapse" data-target="#{{$index}}">Detail</button>
+                                    <a href="#"><span class="glyphicon glyphicon-print"></span></a>&nbsp;
+                                    <a href="#"><span class="glyphicon glyphicon-envelope"></span></a>&nbsp;
+                                    <a href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>&nbsp;
+                                    <a href="#"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                </div>
+
+                            </div>
+                            <div id="{{$index}}" class="collapse">
+
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <div class="row">
+                                            <!-----------------------------------------------------------------------------Start of Panel1-------------------------------------------------------------------------------------------->
+                                            <div class="col-sm-8" style="background-color:white;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h2>Flight : Bangkok -> Paris
+                                                            <label class="checkbox-inline pull-right">
+                                <h4>
+                                  <input type="checkbox" value="" data-toggle="collapse" data-target="#{{$index}}de">Detail
+                                </h4>
+                              </label>
+
+                                                        </h2>
+                                                        <div id="{{$index}}de" class="collapse">
+                                                            <h4>Detail ของ Flight</h4>
+                                                            <div class="form-group">
+                                                                <label class="control-label col-sm-2" for="email">Email:</label>
+                                                                <div class="col-sm-10">
+                                                                    <p class="form-control-static">someone@example.com</p>
+                                                                </div>
+                                                            </div>
+                                                            <button type="button" class="btnSelect center-block" data-toggle="collapse" data-target="#{{$index}}do">Select</button>
+                                                            <br>
+                                                            <div id="{{$index}}do" class="collapse">
+                                                                <div class="well well-sm" style="background-color: white">ราคาประกันภัย
+                                                                    <br>
+                                                                    <div class="checkbox">
+                                                                        <label>
+                                    <input type="checkbox" id="ckinj" value="" onclick="injAnsure()">ประกันอุบัติเหตุ </label>
+                                                                        <div class="PriceSpectial1 pull-right">$100</div>
+                                                                        <br>
+                                                                        <label>
+                                    <input type="checkbox" id="ckbag" value="" onclick="bagAnsure()">ประกันกระเป๋า </label>
+                                                                        <div class="PriceSpectial2 pull-right">$20</div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="well well-sm" style="background-color: white">ราคาService
+                                                                    <br>
+                                                                    <div class="checkbox">
+                                                                        <label>
+                                    <input type="checkbox" id="cknoti" value="" onclick="noti()">แจ้งเตือนเครื่องบินเลื่อน</label>
+                                                                        <div class="PriceSpectial1 pull-right">$5</div>
+                                                                        <br>
+                                                                        <label>
+                                    <input type="checkbox" id="cksms" value="" onclick="SMS()"> แจ้งเตือน SMS ก่อนเดินทาง </label>
+                                                                        <div class="PriceSpectial2 pull-right">$10</div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <button type="button" class="btnSelect center-block">OK</button>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-----------------------------------------------------------------------------End of Panel1-------------------------------------------------------------------------------------------->
+
+
+
+
+
+
+                                            <!-----------------------------------------------------------------------------Start of Panel2-------------------------------------------------------------------------------------------->
+                                            <div class="col-sm-4" style="background-color:white;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <table style="width:100%;">
+                                                            <tr>
+                                                                <th> ราคา Flight </th>
+                                                                <th id="p-flight"> 0</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th> ราคาประกันภัย </th>
+                                                                <th id="p-en"> 0</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th> ราคา Service </th>
+                                                                <th id="p-serv"> 0</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>ภาษีมูลค่าเพิ่ม </th>
+                                                                <th id="p-tax"> 0</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th> รวมเป็นเงิน </th>
+                                                                <th id="p-total"> 0</th>
+                                                            </tr>
+
+                                                        </table>
+
+                                                        <button type="button" class="btnPrice center-block">Confirm</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-----------------------------------------------------------------------------End of Panel2-------------------------------------------------------------------------------------------->
+
+
+                                        </div>
+                                        <h3 style="color: blue;">Out bound</h3>
+                                        <p style="font-size:10pt;">{{x.outbound.takeOffTime.dayOfMonth + "/" + x.outbound.takeOffTime.month + "/" + x.outbound.takeOffTime.year}}</p>
+
+                                        <div clss="container" ng-repeat="y in x.outbound.transists">
+                                            <div>
+
+                                                <h4>
+                                                    <img src="http://www.clker.com/cliparts/B/X/8/8/p/r/departures-airport-sign.svg" style="width:30px; height:30px;">{{y.fromAirport}}</h4>
+                                            </div>
+                                            <p>-----------------------------------------------------------------------------------</p>
+                                            <div>
+                                                <h4>
+                                                    <img src="http://www.deluxevectors.com/images/sample/arrivals-pictogram" style="width:30px; height:30px">{{y.toAirport}}</h4>
+                                            </div>
+                                            <p>Flight #: {{y.flightNO}} | aircarft type: {{y.aircraftType}} | operated by: {{y.airline}} | Adult: {{y.seatClass}} class | fare N | {{y.remainingSeats}} seats ramaining</p>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                            <li class="list-group-item" style="background-color:#D8D8D8;">Book now
+                                <u style="color:blue;">€{{x.outbound.price}}</u> only!</li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- This is div for Matrix-view tab-->
+            <div id="matrix-view" class="tab-pane fade">
+                <p>This is the matrix view tab</p>
+            </div>
+        </div>
+    </div>
+    <script src="ng/flight.js"></script>
+    <script src="js/plus.js"></script>
+</body>
+
+</html>

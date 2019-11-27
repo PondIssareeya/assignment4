@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search result</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        th {
+            width: -15px;
+        }
+        
+        #must {
+            color: orange;
+        }
+        
+        #more,
+        #traserv,
+        #bagserv,
+        #notiserv,
+        #smsserv {
+            color: rgb(241, 11, 80);
+        }
+    </style>
+</head>
+
+<body ng-app="flightApp" ng-controller="resultCtrl">
+
+    <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#list-view">List View</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#matrix-view">Matrix View</a>
+            </li>
+        </ul>
+        <!-- This is div that contrain tab data -->
+        <div class="tab-content">
+
+            <!-- This is div for list-view tab-->
+            <div id="list-view" class="tab-pane fade in active">
+
+                <!-- This is div for head of column-->
+                <div class="container">
+
+                    <div class="col-sm-9">
+                        <br>
+                        <p> {{data.length + " of " + data.length}} shown - one-way</p>
+                    </div>
+
+                    <div class="col-sm-3" style="text-align: right;">
+                        <ul class="pagination pagination-sm">
+                            <li>
+                                <a href="#"><span class="glyphicon glyphicon-triangle-left"></span>&nbsp;</a>
+                                <a href="#">1</a>
+                                <a href="#"><span class="glyphicon glyphicon-triangle-right"></span>&nbsp;</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="container">
+                        <table class="table">
+                            <thead>
+                                <tr class="active">
+                                    <th class="text-center">
+                                        <u style="color: blue;">Price</u>
+                                    </th>
+                                    <th>
+                                        <u style="color: blue;">Airline</u>
+                                    </th>
+                                    <th>
+                                        <u style="color: blue;">Take-off</u>
+                                    </th>
+                                    <th class="text-center">
+                                        <u style="color: blue;">Landing</u>
+                                    </th>
+                                    <th class="text-center">
+                                        <u style="color: blue;">Stops (Duration)</u>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- This is div for each data's flight-->
+                <br>
+                <div class="container" style="margin-left: -0.4cm;">
+                    <div class="container" ng-repeat="x in data">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <table class="table">
+                                    <tr style="border-collapse:separate;">
+                                        <td rowspan="2">
+                                            <p style="font-size:24pt; color:blue" id="para" name="para">€{{x.outbound.price}}</p>
+                                            </th>
+                                            <td>{{x.outbound.airline}}</th>
+                                                <td>{{x.outbound.takeOffFrom}}
+                                                    <br>{{x.outbound.takeOffTime.hourOfDay + ":" + x.outbound.takeOffTime.minute}}</th>
+                                                    <td>{{x.outbound.landingTo}}
+                                                        <br>{{ x.outbound.landingTime.hourOfDay + ":" + x.outbound.landingTime.minute}}</th>
+                                                        <td>{{x.outbound.transists.length + flightDataService.getDurationTime(x.outbound.takeOffTime.hourOfDay, x.outbound.takeOffTime.minute , x.outbound.landingTime.hourOfDay, x.outbound.landingTime.minute)}}(19h
+                                                            42m)
+                                                            </th>
+                                    </tr>
+                                </table>
+
+                                <div align="right">
+                                    <button class="btn btn-link" style="text-decoration: underline" data-toggle="collapse" data-target="#{{$index}}" onclick="flightp()">Detail</button>
+                                    <a href="#"><span class="glyphicon glyphicon-print"></span></a>&nbsp;
+                                    <a href="#"><span class="glyphicon glyphicon-envelope"></span></a>&nbsp;
+                                    <a href="#"><span class="glyphicon glyphicon-heart-empty"></span></a>&nbsp;
+                                    <a href="#"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                </div>
+
+                            </div>
+
+                            <div id="{{$index}}" class="collapse">
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <h3 style="color: blue;">Out bound</h3>
+                                        <p style="font-size:10pt;">{{x.outbound.takeOffTime.dayOfMonth + "/" + x.outbound.takeOffTime.month + "/" + x.outbound.takeOffTime.year}}</p>
+
+                                        <div clss="container" ng-repeat="y in x.outbound.transists">
+                                            <div>
+
+                                                <h4>
+                                                    <img src="http://www.clker.com/cliparts/B/X/8/8/p/r/departures-airport-sign.svg" style="width:30px; height:30px;">{{y.fromAirport}}</h4>
+                                            </div>
+                                            <p>-----------------------------------------------------------------------------------</p>
+                                            <div>
+                                                <h4>
+                                                    <img src="http://www.deluxevectors.com/images/sample/arrivals-pictogram" style="width:30px; height:30px">{{y.toAirport}}</h4>
+                                            </div>
+                                            <p>Flight #: {{y.flightNO}} | aircarft type: {{y.aircraftType}} | operated by: {{y.airline}}</p>
+                                            <br>
+                                            <br>
+                                        </div>
+
+                                        <button type="button" class="btn btn-info" style="width:120px; height:40px; margin: auto auto; display: block;" data-toggle="collapse" data-target="#{{$index}}do">Select</button>
+                                        <br>
+
+
+                                        <div id="{{$index}}do" class="collapse">
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    <div class="well well-sm" style="background-color: white">
+                                                        <div class="row">
+                                                            <div class="col-sm-2">
+                                                                <label id="title">Title </label>
+                                                                <label id="must">*</label>
+                                                                <select class="form-control" id="c_title" name="c_title" style="width: 90px">
+                                                                    <option selected>Title</option>
+                                                                    <option value="Miss">Miss</option>
+                                                                    <option value="Mr">Mr.</option>
+                                                                    <option value="Mrs">Mrs.</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <label id="fName">Firstname </label>
+                                                                <label id="must">*</label>
+                                                                <input type="text" class="form-control" id="fName" name="fName" style="width: 150px" placeholder="firstname">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <label id="lName">Lastname </label>
+                                                                <label id="must">*</label>
+                                                                <input type="text" class="form-control" id="lName" name="lName" style="width: 150px" placeholder="lastname">
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <label id="bDay">Birth Date </label>
+                                                                <label id="must">*</label>
+                                                                <input type="date" class="form-control" name="bday" min="1960-01-01">
+                                                            </div>
+                                                        </div>
+
+                                                        <br>
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <label id="passNo">Passport No. </label>
+                                                                <label id="must">*</label>
+                                                                <input type="text" class="form-control" id="passNo" name="passNo" style="width: 150px" placeholder="123456789">
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <label id="country">Country </label>
+                                                                <label id="must">*</label>
+                                                                <select class="form-control" id="country" name="country" style="width: 200px">
+                                                                        <option selected></option>
+                                                                        <option value="TH">Thailand</option>
+                                                                        <option value="US">America</option>
+                                                                        <option value="UK">England</option>
+                                                                        <option value="KR">Korea</option>
+                                                                        <option value="JPN">Japan</option>
+                                                                    </select>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <label id="pass_epr">Passport Expiration Date </label>
+                                                                <label id="must">*</label>
+                                                                <input type="date" class="form-control" name="bday" min="1960-01-01">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <button id="nextBtn" class="btn btn-success" style="width:120px; height:40px; margin: auto auto; display: block;" data-toggle="collapse" data-target="#{{$index}}done">NEXT</button>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-sm-4">
+
+                                                    <div class="col-sm-12" style=" background-color:white;">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-body">
+                                                                <h4 style="text-align: center; "><strong>Payment Information</strong></h4><br>
+                                                                <table style="width:100%;">
+                                                                    <tr>
+                                                                        <th> <img src="images/arrow.png" class="img" height="30" width="30"> Flight</th>
+                                                                        <th id="p-flight"> 0 </th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th><img src="images/arrow.png" class="img" height="30" width="30">Tax</th>
+                                                                        <th id="p-tax">0</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th data-toggle="collapse" data-target="#{{$index}}serv"><img src="images/arrow.png" class="img" height="30" width="30">Service</th>
+                                                                        <th id="p-serv"> 0</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>
+                                                                            <div id="{{$index}}serv" class="collapse">
+                                                                                <label id="traserv">- Travel Insurance 0 บาท</label>
+                                                                                <label id="bagserv">- Baggage Insurance 0 บาท</label>
+                                                                                <label id="notiserv">- Notification 0 บาท</label><br>
+                                                                                <label id="smsserv">- SMS 0 บาท</label>
+                                                                            </div>
+                                                                        </th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <!-- <th>ภาษีมูลค่าเพิ่ม </th> -->
+                                                                        <th><img src="images/arrow.png" class="img" height="30" width="30">Discount</th>
+                                                                        <!-- <th id="p-tax"> 0 บาท</th> -->
+                                                                        <th id="sale">0 </th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th><br></th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <!-- <th> รวมเป็นเงิน </th> -->
+                                                                        <th>Total</th>
+                                                                        <th id="p-total"> 0 </th>
+                                                                    </tr>
+
+                                                                </table>
+                                                                <br>
+                                                                <!-- <button type="button" class="btnPrice center-block">Confirm</button> -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="{{$index}}done" class="collapse">
+                                            <h4><img src="images/bagicon.png" class="img" height="50" width="50"> ประกันภัยระหว่างการเดินทาง</h4>
+                                            <div class="well well-sm" style="background-color: white">
+                                                <div class="row">
+                                                    <div class="col-sm-7">
+                                                        <div class="checkbox">
+                                                            <label id="travel_ins" style="color: blue;">&nbsp;&nbsp;    
+                                                                <input type="checkbox" id="ckbag" value="" onclick="bagAnsure()">
+                                                                ประกันกระเป๋าเดินทางหาย หรือ ล่าช้า
+                                                            </label>
+                                                            <br>
+                                                            <label id="price_health">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ราคา 350 บาท)</label>
+                                                            <br><br>
+                                                            <label id="must">*</label>
+                                                            <label id="more"> ดูเพิ่มเติม </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                        <img src="images/bag.jpg" class="img" height="150" width="400">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="well well-sm" style="background-color: white">
+                                                <div class="row">
+                                                    <div class="col-sm-7">
+                                                        <div class="checkbox">
+                                                            <label id="travel_ins" style="color: blue;">&nbsp;&nbsp;    
+                                                                    <input type="checkbox" id="ckinj" value="" onclick="injAnsure()">
+                                                                    ประกันอุบัติเหตุและสุขภาพระหว่างเดินทาง
+                                                                </label>
+                                                            <br>
+                                                            <label id="price_health">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ราคา 1,300 บาท)</label>
+                                                            <br><br>
+                                                            <label id="must">*</label>
+                                                            <label id="more"> ดูเพิ่มเติม </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                        <img src="images/health.jpg" class="img" height="150" width="400">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <h4><img src="images/service.png" class="img" height="50" width="50"> บริการเพิ่มเติม</h4>
+                                            <div class="well well-sm" style="background-color: white">
+                                                <div class="row">
+                                                    <div class="col-sm-7">
+                                                        <div class="checkbox">
+                                                            <label>&nbsp;&nbsp;    
+                                                                    <input type="checkbox" id="cknoti" value="" onclick="noti()">แจ้งเตือนเครื่องบินเลื่อน (ราคา 150 บาท)
+                                                                </label><br>
+                                                            <label>&nbsp;&nbsp;    
+                                                                    <input type="checkbox" id="cksms" value="" onclick="SMS()"> แจ้งเตือน SMS ก่อนเดินทาง (ราคา 300 บาท)
+                                                                </label>
+                                                            <br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-success" style="width:120px; height:40px; margin: auto auto; display: block;" data-toggle="modal" data-target="#{{$index}}confirm" onclick="confirm()">NEXT  <i class="fa fa-angle-right" style="font-size:18px"></i></button>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div id="{{$index}}confirm" class="modal" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h2 class="modal-title" style="color: rgb(82, 79, 245);"><strong>Payment Information</strong></h2>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="panel-body">
+                                                <table style="width:100%;">
+                                                    <tr>
+                                                        <th> ราคา Flight </th>
+                                                        <th id="p-flightPopup">0</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th> ราคาประกันภัย </th>
+                                                        <th id="p-enPopup">0</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th> ราคา Service </th>
+                                                        <th id="p-servPopup">0</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>ภาษีมูลค่าเพิ่ม </th>
+                                                        <th id="p-taxPopup">0</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th> รวมเป็นเงิน </th>
+                                                        <th id="p-totalPopup">0</th>
+                                                    </tr>
+
+                                                </table>
+                                                <!-- <br> -->
+                                                <!-- <button type="button" class="btnPrice center-block">Confirm</button> -->
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" ng-click="home()">Confirm</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <li class="list-group-item " style="background-color:#D8D8D8; ">Book now
+                                <u style="color:blue; ">€{{x.outbound.price}}</u> only!
+                            </li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- This is div for Matrix-view tab-->
+            <div id="matrix-view " class="tab-pane fade ">
+                <p>This is the matrix view tab</p>
+            </div>
+        </div>
+    </div>
+    <script src="js/flight.js "></script>
+    <script src="js/plus.js "></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
